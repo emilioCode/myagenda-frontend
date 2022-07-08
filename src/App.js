@@ -1,23 +1,44 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import NavBar from "./components/Navbar";
+import "bootstrap/dist/css/bootstrap.min.css";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
+import Agenda from "./pages/Agenda";
+import NotFound from "./pages/404";
 
 function App() {
+  const app = {
+    title: "react-agenda",
+    routes: [
+      {
+        name: "Bio",
+        path: "https://bio.link/emiliomendez_",
+        component: null,
+      },
+      {
+        name: "GitHub",
+        path: "https://github.com/emilioCode",
+        component: null,
+      },
+      { name: "Agenda", path: "/agenda", component: <Agenda /> },
+    ],
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Router>
+        <NavBar routes={app.routes} />
+        <br />
+        <div className="container">
+          <Routes>
+            <Route exact path="/" element={<Home />} />
+            {app.routes.map((a, index) => {
+              return <Route path={a.path} element={a.component} key={index} />;
+            })}
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </div>
+      </Router>
     </div>
   );
 }
