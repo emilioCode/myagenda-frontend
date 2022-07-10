@@ -5,8 +5,11 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Agenda from "./pages/Agenda";
 import NotFound from "./pages/404";
+import { useState } from "react";
+import Loader from "./components/Loader";
 
 function App() {
+  const [loading, setLoading] = useState(true);
   const app = {
     title: "react-agenda",
     routes: [
@@ -20,7 +23,11 @@ function App() {
         path: "https://github.com/emilioCode",
         component: null,
       },
-      { name: "Agenda", path: "/agenda", component: <Agenda /> },
+      {
+        name: "Agenda",
+        path: "/agenda",
+        component: <Agenda setLoading={setLoading} />,
+      },
     ],
   };
 
@@ -39,6 +46,7 @@ function App() {
           </Routes>
         </div>
       </Router>
+      <Loader hide={loading} color={"primary"} type={"border"} />
     </div>
   );
 }

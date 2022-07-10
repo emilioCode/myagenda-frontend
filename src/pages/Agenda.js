@@ -2,8 +2,9 @@ import { Button, Table } from "reactstrap";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
-const Agenda = () => {
+const Agenda = (props) => {
   const apiUrl = "https://localhost:7291/api/Contact";
+  const { setLoading } = props;
   const [contacts, setContacts] = useState([]);
   const [contact, setContact] = useState({
     Id: "",
@@ -15,6 +16,7 @@ const Agenda = () => {
     setModal(!modal);
   };
   const getContacts = async () => {
+    setLoading(false);
     await axios
       .get(apiUrl)
       .then((res) => {
@@ -28,12 +30,12 @@ const Agenda = () => {
       .catch((error) => {
         console.log(error);
         setContacts([]);
+      })
+      .finally((_) => {
+        setTimeout(() => {
+          setLoading(true);
+        }, 1000);
       });
-    // .finally((_) => {
-    //   setTimeout(() => {
-    //     setLoading(true);
-    //   }, 1000);
-    // });
   };
   const [disableField, setDisableField] = useState(false);
   const [disableButton, setDisableButton] = useState(false);
@@ -111,6 +113,7 @@ const Agenda = () => {
         <h1>Contact module</h1>
         <br />
         <Button
+          block
           color="primary"
           size="sm"
           outline
@@ -118,6 +121,7 @@ const Agenda = () => {
         >
           Add new contact
         </Button>
+        <br />
         <br />
         <Table borderless hover responsive striped bordered>
           <thead>
